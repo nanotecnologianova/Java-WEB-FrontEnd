@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html ng-app="produtosApp">
+    <head>
+        <title>Application JAVA WEB - Análise de Risco</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body ng-controller="ProdutosControler">
+        
+        <!--Cadastro de Cliente-->
+       <form>
+           <h2>Cadastro de Cliente</h2>
+        <label for="codigo">Código: </label>
+        <input id="codigo" name="codigo" type="text" ng-model="produto.id"/>
+        <br>
+        <label for="nomecliente">Nome do Cliente: </label>
+        <input id="nomecliente" name="nomecliente" type="text" ng-model="produto.nomecliente"/>
+        <br>
+        <label for="limitecredito">Limite de Crédito: </label>
+        <input id="limitecredito" name="limitecredito" type="text" ng-model="produto.limitecredito"/>
+        <br>
+        <button ng-click="salvar(produto)"> Salvar </button>
+        <button ng-click="cancelar()"> Cancelar </button><p>
+            
+            <!-- O valor será adicionado ao cálculo do valor -->
+            <!-- A mantém o valor | B adicona taxa de juros 10% | C adiciona taxa de juros 20% -->
+			
+        <h3>Selecione o Risco da transação:</h3><br>
+        <select name="select">
+            <option value="risco1">Risco A</option>
+            <option value="risco2">Risco B</option>
+            <option value="risco3">Risco C</option>
+         </select>
+       </form>
+	  
+	  
+      List<select> option = select.getOptions();
+<!--Considerando juros simples? Usando fórmula de Excel de valores B1*B2*B3 para chegar ao resultado desejado de adição de juros-->
+
+    for (WebElement option : options) {
+         code = option.getAttribute("value");
+        if (code == risco2) {
+		code=(10%*limitecredito*1) else
+		code=(20%*limitecredito*1);
+            option.click();
+            break;
+        }       
+
+    }
+}
+
+        <!--Tabela de Resultados-->
+        <h1>Formulário de Cadastro</h1><p>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Nome do Cliente</th>
+<th>Limite de Crédito</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+    <tr ng-repeat = "produto in produtos track by $index">
+        <td>{{produto.id}}<br></td>
+        <td>{{produto.nomecliente}}<br></td>
+        <td>{{produto.limitecredito}}<br></td>
+        <td><a href="" ng-click="excluir(produto)">{Excluir}</a></td>
+        <td><a href="" ng-click="editar(produto)">{Editar}</a></td>
+</tr>
+</tbody>
+</table>
+        
+        
+        <script src="js/angular.min.js"></script>
+        <script>
+            var app = angular.module('produtosApp', []);
+            
+            app.controller('ProdutosController', function($scope){
+                var produtos = [{
+                        id: 1,
+                        nomecliente: 'Carlos',
+                        limitecredito: 3.000 * code
+                },{
+                        id:2,
+                        nomecliente: 'Camila',
+                        limitecredito: 5.000 * code       
+                }];
+            $scope.produto = {};
+            $scope.produtos = produtos;
+            
+            $scope.salvar = function(produto){
+                var produtoEncontrado = false;
+                for(var i=0,length=produtos.length; i <length; i++){
+                    if(produtos[i].id == produto.id){
+                        produtos[i].nomecliente = produto.nomecliente;
+                        produtos[i].limitecredito = produto.limitecredito;
+                        produtoEncontrado = true;
+                        break;
+                    }
+                 }
+                if(!produtoEncontrado){
+                produtos.push(produto);
+            }
+                $scope.produto = {};
+            };
+            
+            $scope.editar = function(produto) {
+                $scope.produto = angular.copy(produto);
+            }
+            
+            $scope.excluir = function(produto) {
+                for(var i=0,length=produtos.length; i <length; i++){
+                    if(produtos[i].id == produto.id){
+                        produtos.splice(i, 1);
+		     }
+                   }
+                };
+		$scope.cancelar = function() {
+			$scope.produto = {};
+		};    
+            });
+        </script>
+    </body>
+</html>
